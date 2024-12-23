@@ -1,0 +1,418 @@
+Version Control System = collabrate and snapshots
+Centrailized -centralized server- apache sebversion,(VS) team foundation server
+distributed - multiple server - git, mercurial 
+------------------------------------------------------------------------------
+Git Bash
+- A command-line interface for Git on Windows that mimics a Unix-like shell, allowing users to run Git commands and scripts.
+
+Git GUI
+- A graphical user interface for Git, providing visual tools for managing repositories, commits, and branches, making it easier for beginners to use Git.
+
+Git CMD
+- The standard Windows Command Prompt with Git integrated, enabling users to run Git commands in a familiar Windows environment without additional Unix-like features.
+------------------------------------------------------------------------------
+What is Git?
+A distributed version control system to track changes in source code.
+-- In special database called respository
+-- Free OpenSource SuperFast Scalable Branching/merging
+-- local and remote
+-- GitLens Extension
+-- GitKraken Git GUI -- Sourcetree
+-- codeeditors or IDE's
+
+CLI
+
+-- Git BASH - born again shell
+Config -- different settings for... 
+-- system level
+-- global level
+-- local level
+
+-- end up lines are indicated with line field
+--- windows: abc\r\n
+--- linux: abc\n
+
+carriage record line fit
+-- windows: git config --global core.autocrif true
+-- linux: git config --global core.auttocrif input
+
+workflow - file(working repository) -> stagingarea(=index) -> repository
+
+git config --help (space , q)
+git config --h
+
+git --version
+
+ - When you set global configuration in Git (like user name and email), it’s stored in a configuration file on your local machine, not in the repository itself. Specifically, it’s saved in a file called .gitconfig located in your home directory.
+ - global settings apply across all repositories on your machine, while local settings only apply to the specific repository.
+------------------------------------------------------------------
+
+git config --global user.name "Your Name"
+git config --global user.email "you@example.com"
+git config --global code.editor "code --wait"
+git config --global -e
+
+-> When you make a commit, the user.name and user.email from your global config are recorded in the commit history. 
+
+-> user.name and user.email in Git do not affect remote mail connections. They are used primarily for identifying the author of commits in the local repository. 
+
+-> When you push to a remote repository (like GitHub or GitLab), these values are included in the commit history, but they don't configure any email or communication settings for remote interactions. For remote connections, you'd typically manage settings like SSH keys or access tokens.
+
+-> When you push that commit to a remote repository, this information is also included in the commit's metadata. So anyone viewing the commit log on the remote repository will see your configured name and email. This helps identify who made specific changes to the code.
+
+-> Once you set your global config settings (like user.name and user.email), you don't need to configure them for every individual repository. These settings will automatically apply to all repositories on your machine, simplifying your workflow. You only need to change them if you want to update your name or email for future commits.
+
+git init (= created a repo)
+git clone <repository-url>
+
+ls 
+ls -a
+git ls-files # lists the files that are in staging area
+git ls-tree # is used to display the contents of a tree object in Git.
+
+workflow - file -> stagingarea(=index) -> repository
+git status		 # Check the Status of the Repository (staging area)
+git status -s
+git add <file-name>      # Add a specific file
+git add .                # Add all changes
+git add file.js file2.js file3.js
+
+git commit -m "Commit message" (commit message which is used to identify it in the commit history.)
+git commit
+
+# skiping staging area
+git commit -am "commit message"
+git commit -a -m "commit message"
+
+git ls-files # lists the files that are in staging area
+
+git rm file2.txt *txt ( removes from directory as well as from staging area)
+
+git mv file2.txt main.js
+
+-- commit: ID Message Date/Time Author CompleteSnapshot
+-- we have add every time in to staging area when we commit new one
+it's because the previous ones will stay in staging area
+-- compress the content
+-- don't stores duplicate content
+
+.gitignore (= ignores)(add directories and files)
+-- files listed in the .gitignore file will not be tracked by Git and will not change when you commit. The purpose of .gitignore is to specify files and directories that you want Git to ignore, so they won't be added to the staging area or committed to the repository.
+
+git rm --h
+
+git diff --staged
+git diff ( states unstaged)
+== diff tools = KDiff3, P4Merge, WinMerge(windowsonly), VSCode
+
+git config --global diff.tool vscode ( just giving the name in this case)
+	diff.tool: This is the configuration key for specifying the diff tool that Git should use.
+	vscode: This is the name you are giving to your diff tool. It can be any name, but here it identifies that you want to use VSCode.
+
+# To lanch in VSCode
+git config --global difftool.vscode.cmd "code --wait --diff $LOCAL $REMOTE" (addded code to path ) 
+
+difftool.vscode.cmd: This specifies the command that will be executed when you use the git difftool command with the vscode tool. 
+	"code --wait --diff $LOCAL $REMOTE": This is the command that runs VSCode for showing the differences.
+		code: This is the command-line interface for launching VSCode. It assumes that you have added VSCode to your system's PATH.
+		--wait: This option tells VSCode to wait until you close the diff window before returning control to the terminal. This is important for Git to function correctly after viewing the diff.
+		--diff: This option tells VSCode to open in diff mode, comparing two files.
+		$LOCAL: This is a placeholder that Git replaces with the path to the local file (the version in your working directory).
+		$REMOTE: This is a placeholder that Git replaces with the path to the remote file (the version in the repository) git config --global -e
+
+git log
+git log --oneline
+git log --oneline --reverse
+
+-----------------------------------------------------------------
+git show <id>
+git show 
+=== command is used to display information about a specific commit, including its changes, metadata (like author and date), and the commit message.
+
+git show HEAD~1:.gitignore
+=== In summary, git show HEAD~1:.gitignore allows you to inspect the previous version of the .gitignore file, which can help you understand changes made over time. If you have more questions or need further assistance, feel free to ask!
+git show HEAD~2
+
+| **Command**                          | **Description**                                                                                          |
+|--------------------------------------|----------------------------------------------------------------------------------------------------------|
+| **Show Current Commit                | `git show`<br>Displays the most recent commit's details, including its message and changes.             |
+| **Show Specific Commit               | `git show <commit_hash>`<br>Displays details for the specified commit identified by `<commit_hash>`.    |
+| **Show Previous Commit               | `git show HEAD~1`<br>Shows the details of the commit just before the current `HEAD`.                   |
+| **Show a File at a Specific Commit   | `git show <commit_hash>:<path/to/file>`<br>Displays the content of a specific file as it was in the specified commit. |
+| **Show a File from Previous Commit   | `git show HEAD~1:<path/to/file>`<br>Shows the content of a specific file from the previous commit.     |
+| **Show Changes for a Specific Commit | `git show <commit_hash> -- <path/to/file>`<br>Displays the changes made to a specific file in the specified commit. |
+| **Show Changes Between Commits       | `git show <commit_hash1>..<commit_hash2>`<br>Shows the changes between two specified commits.           |
+| **Show Commit with Patch             | `git show -p <commit_hash>`<br>Displays the commit details along with the patch showing the changes made. |
+| **Show Only Commit Message           | `git show --no-patch <commit_hash>`<br>Displays only the commit message and metadata without showing changes. |
+| **Show with Graph                    | `git log --graph --oneline`<br>Provides a visual representation of the commit history.                 |
+| **Show All Commits for a Branch      | `git show <branch_name>`<br>Displays the latest commit for the specified branch.                       |
+| **Show with Author and Date          | `git show --format=full <commit_hash>`<br>Shows detailed information about a commit, including author and date. |
+
+git restore --h
+git restore --staged file.txt *.txt
+
+git clean --h 
+git clean --fd
+
+git branch <branch-name>
+git checkout <commit-hash>	# switch to commit
+git checkout master
+git checkout -b <branch-name> 	# create and switch to a branch
+
+# merge a Branch
+git checkout <target-branch>
+git merge <branch -name>
+------------------------------------------------------------------------------
+1. git commit -am "commit msg"
+- git config --global alias.ac "commit -am"
+
+2. change the message of the commit = ammend
+- git commit -ammend -m "new commit msg"
+2a. add files to the last commit
+- git commit --ammend
+
+3. force push = --force
+4. revert = undo a commit with a  new commit
+	git revert <commit-name>
+
+5. stash
+6. git branch -m main = command git branch -m main is used to rename the current branch to main
+7. git log --graph --oneline --decorate
+8. Switch to Previous Branch: git checkout -
+
+------------------------------------------------------------------------------
+What is GitHub?
+A platform for hosting Git repositories, enabling collaboration and sharing.
+where it allows developer to store and manage their code using GIt
+
+-------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+auto complete == fishshell
+
+workflow - file(working repository) -> stagingarea(=index) -> repository
+
+-- untracked files: ??
+-- changes to be commited: M
+-- changes not staged for commit: MM
+
+git --verision
+
+git config --global usser.name " " 
+git config --global user.email " "
+
+git config --global -e
+git config --global --edit
+
+mkdir gitrepo
+cd gitrepo
+
+git init
+
+ls
+ls -a
+
+\file1.txt
+\f2ile.txt
+
+git status -s
+
+git add file1.txt
+git add .
+
+git status
+
+git commit -m "initial commit" ( -m = writing a message)
+git commit -am "initial commit"
+
+git log --oneline
+git log (- unique identifier)
+
+git checkout <commit hash code/branch name> ( = switches to commet mentioned snapshot)
+
+git checkout master ( = switch back to master)
+
+-> case1 = initial commit 
+git checkout <commit hash code>
+git branch ( = shows the present commit which detached with Head (master) along with id)
+
+-> case2 = master
+git checkout master
+git log
+
+git branch -m old-branch-name new-branch-name 	-renames an existing branch.
+git branch <alternate universe>
+git checkout alternate universe
+git checkout master
+
+git checkout -b branch11 ( = creates and switches)
+
+git checkout main  ( =Firstly goto the branch or master where want to merge)
+git merge <name>
+
+git add .
+git commit -m "Resolved merge conflicts"
+
+.gitignore
+
+git checkout - ( = goto previous branch)
+Using code (if you have Visual Studio Code installed): code .gitignore
+ 
+----------------------
+git branch : This will show you a list of all local branches. The current branch will be highlighted with an asterisk (*).
+git branch branch-name : creates a new branch named branch-name.
+git branch -d branch-name : deletes the specified branch. Use -D to force delete if the branch hasn't been fully merged
+git branch -r : lists all remote branches.
+---------------------------------------------------------------------
+-------------------------------------
+GitHub:
+
+echo "Hello" >> readme.md
+git init
+git add readme.md
+git commit -m "first commit"
+git branch -M master
+git remote add origin https://github.com..../....git
+git push -u origin master
+
+--- git branch -M master = This renames the current branch to master. The -M flag forces the rename, even if a branch named master already exists.
+--- git remote add origin https://github.com..../....git = This adds a remote repository (typically hosted on GitHub) named origin. The URL should point to your GitHub repository.
+--- git push -u origin master = This pushes the local master branch to the remote repository named origin. The -u flag sets the upstream tracking relationship, so future pushes can be done simply with git push.
+
+CLI
+
+git remote -v
+git remote add origin <https://github.com/..../...git>
+git remote -v 		# to verfiy branch
+git branch 		# to check branch
+git branch -M main	# to rename current branch
+git push -u orgin master
+username
+password
+
+git checkout branch1
+git checkout dev
+git push -u orgin dev
+-> After running this command, the dev branch on your local machine will be pushed to the origin remote, and you’ll set it to track that remote branch for future pushes and pulls.
+
+git clone <repo url>
+
+pull request --> review --> merge pull request --> confirm merge 
+
+Fork -> clone -> changes(commit) -> push -> pull request -> DONE
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+~ -> root directory
+	- The global config in .gitconfig helps identify you as the author of commits.
+	- After cloning a repository, you can work on it locally, and your changes will push to the remote repo once you commit and push them.
+
+= 	Configuring Git
+
+git config --global user.name " "
+git config --global user.email " "
+git config --list
+git config --global -e
+
+=	clone config
+When you clone a repository using git clone <repository-url>, Git automatically initializes the repository for you. It sets up the necessary .git directory, making the cloned repository ready for use.
+
+git clone <link>
+
+unmodified 
+modified
+staged
+unchanged 
+
+git add
+git commit
+git push -u origin master = This pushes the local master branch to the remote repository named origin. The -u flag sets the upstream tracking relationship, so future pushes can be done simply with git push.
+
+git push origin main
+
+=	init command
+init = used to create a new git repo
+
+mkdir
+cd
+
+git init
+git add .
+git commit -m " "
+
+git remote add origin <link> 
+git remote -v		# to verfiy branch
+git branch 			# to check branch
+git branch -M main	# to rename current branch
+git branch -u origin main  
+The command 'git branch -u origin main' is used to set the upstream tracking branch for the current branch to origin/main. This means that when you run commands like git pull or git push, Git will know to fetch from and push to origin/main by default.
+
+git remote remove origin # To remove the remote repository named "origin" from your local Git configuration.
+
+=	Branch commands
+git branch 					# to check branch
+git branch -M main 			# to rename current branch
+git checkout <branch name> 	# to navigate(switch to..)
+git checkout -b <branch-name> 	# to create new branch
+git checkout -d <branch-name>	# to delete branch
+
+=	Compare
+git diff <branch-name>		# compares branch-name with the current branch( ..main)
+
+=	Merge
+way 1: 
+create a PR(PullRequest) --> PR review
+each feature or fix you want to merge into the main branch would involve creating a separate pull request. 
+
+git pull origin main	# Pull Any Changes: To ensure your local repo is up-to-date with remote repo
+way 2:
+git diff <_>
+git merge <_>
+
+Way 1: Pull Request (PR)
+	Process:
+		You create a pull request for each feature or fix.
+		The pull request undergoes a review process, where team members can comment, suggest changes, and approve the code.
+		Once approved, the PR is merged into the main branch, often through the web interface of your version control platform (like GitHub, GitLab, etc.).
+		Access: Typically, the repository owner or maintainers manage this process, ensuring that code meets standards and is tested.
+Way 2: Direct Merge (Command Line)
+	Process:
+		Use git diff to review changes.
+		Use git merge to directly merge changes from one branch into another.
+		Access: In this method, the branch owner or someone with direct access can perform the merge without the need for a PR. However, this approach may bypass the review process unless done collaboratively.
+
+= 	Merge Conflict
+== Resolving conflicts
+
+git merge <..>
+git push
+
+= 	reset 
+for staged changes:
+	git reset <file-name>
+	git reset
+for commited changes
+	git reset HEAD~1
+for multiple commits
+	git reset < commited hash >
+	git reset --hard < commit hash >
+
+= 	log
+git log --oneline
+
+= Fork
+rough copy
+
+
+=== have an existing Git repository both locally and on a remote server.
+=== When you have an existing Git repository both locally and on a remote server (like GitHub), the process to connect your local repo to the remote repo is a bit different.
+
+1. cd /path/to/your/local/repo
+2. git remote -v
+This will show you the current remotes. If a remote named origin already exists and points to a different URL, you can either rename or remove it.
+3a. git remote remove origin #  deletes the remote reference named "origin"	
+	/OR/ 	
+3b. git remote rename origin old-origin # renames the existing "origin" remote to "old-origin" instead of deleting it. 
+4. git remote add origin <link>
+5. Fetch from Remote (to update your local branches with any changes): git fetch origin
+6. git checkout -b branch-name origin/branch-name	# create and check out
+7. git push -u origin branch-name
+8. git pull origin main		# Pull Any Changes: To ensure your local repo is up-to-date:
