@@ -145,10 +145,24 @@ pick ghi789 Commit message
 pick jkl012 Commit message
 ```
 3. Save and close the editor
-4. 
+4. Resolve conflicts if any: During the rebase, if any conflicts occur due to the removal of the commit, you'll need to resolve them manually. After resolving conflicts, run:
+```
+git rebase --continue
+```
+5. Force push to update the remote:
 ``` 
 git push origin main --force 
 ```
+**About the merge conflict and divergence.**
+
+"Before pushing, you may encounter merge conflicts because the commit you dropped could cause divergence in the branch history. After resolving the conflicts and completing the rebase, you will need to force-push the changes to sync the local and remote repositories, ensuring they are the same."
+
+**Explanation** of the Fix:
+- Merge Conflict: Conflicts happen because the commit you dropped may have been part of the history that other commits depend on.
+- Divergence: Dropping a commit essentially rewrites history, causing a mismatch between the local branch and the remote branch.
+- Force Push: After resolving conflicts, a force push (git push origin main --force) is required to overwrite the remote history with your rewritten local history, making both local and remote branches identical.
+
+**To clarify:** You resolve conflicts as part of the rebase process, and once all conflicts are resolved, you continue with the rebase and force-push to sync the history.
 
 **Issue :**
 
