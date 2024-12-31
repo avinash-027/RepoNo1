@@ -89,7 +89,98 @@ git log --graph --oneline --decorate --all
 git log --oneline --decorate --all 
 ```
 
-If you want to remove specific commits (such as removing earlier commits and keeping only the last few), this tree helps you visually identify where the branches diverge and where merges occurred, which can guide you when performing actions like rebasing or resetting.
+### Deleting and Renaming Branches in Git
+
+1. **Delete a Local Branch**  
+   - Use the command:  
+     ```
+     git branch -d <branch-name>
+     ```  
+     To force delete (if the branch hasn't been merged):  
+     ```
+     git branch -D <branch-name>
+     ```
+
+2. **Delete a Remote Branch**  
+   - Use the command:  
+     ```
+     git push origin --delete <branch-name>
+     ```
+
+3. **Rename a Local Branch**  
+   - First, switch to a different branch (if you're on the branch you're renaming):  
+     ```
+     git checkout <another-branch>
+     ```  
+   - Rename the branch:  
+     ```
+     git branch -m <old-branch-name> <new-branch-name>
+     ```
+
+4. **Rename a Remote Branch**  
+   - Rename the local branch first (as shown above).  
+   - Delete the old remote branch:  
+     ```
+     git push origin --delete <old-branch-name>
+     ```  
+   - Push the renamed branch and set the upstream:  
+     ```
+     git push origin -u <new-branch-name>
+     ```  
+### Rename a Commit
+
+1. Renaming the Most Recent Commit
+```
+git commit --amend --no-edit
+git commit --amend
+```
+2. Renaming an Older Commit (Interactive Rebase)
+```
+git rebase -i HEAD~3
+
+reword <commit_hash> <commit_message>
+pick <commit_hash> <commit_message>
+```
+
+### To delete commit:
+
+**Option 1: Using `git rebase` (Interactive)**
+
+1. Start interactive rebase:
+   ```bash
+   git rebase -i b75ea4a^
+   ```
+
+2. In the editor, delete(drop) the line with `b75ea4a` (just remove the line).
+
+3. Save and close the editor.
+
+4. If there are conflicts, resolve them and run:
+   ```bash
+   git rebase --continue
+   ```
+
+**Option 2: Using `git reset` (Hard Reset)**
+
+1. Find the commit before `b75ea4a` (let's call it `parent_commit_hash`).
+
+2. Reset to that commit:
+   ```bash
+   git reset --hard <parent_commit_hash>
+   ```
+
+3. If pushed to remote, force push:
+   ```bash
+   git push origin main --force
+   ```
+
+**3. Using git reflog to recover from mistakes (if needed)**
+
+If you made a mistake or want to undo the changes after performing one of the above methods, you can use git reflog to find the commit and reset to it:
+```
+git reflog
+git reset --hard <reflog_commit_hash>
+```
 
 ## Commit Graph Structure:
 
