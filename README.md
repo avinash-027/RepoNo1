@@ -176,6 +176,22 @@ The issue is likely due to a2d5cd7 being part of a different branch or merge his
 
 When you force-push (git push --force), you are essentially overwriting the history of the remote branch with your local branch history. This means the changes that exist in your local main branch will replace the history on the remote main branch.
 
+
+### What is an Empty Commit?
+An empty commit is a commit that doesn't make any actual changes to the code or content compared to the parent commit. This can happen in the following cases:
+
+- Rebasing a commit that doesn't have any changes: 
+   If the changes in a commit were already applied in earlier commits or if the changes were completely overwritten in a subsequent commit, the rebase may produce an empty commit.
+
+- A conflict that isn't resolved: 
+   If you run git rebase --continue after resolving the conflict (but you didn't actually make any changes), Git may create an empty commit because the rebase doesn't have any new changes to apply after resolving the conflict.
+
+**Conclusion**
+
+The "empty commit" you see during the rebase likely occurs because there was no actual change to apply after the conflict resolution. When you resolve a conflict, if the content ends up the same as it was before (e.g., you deleted `README.md` in the current branch and kept it deleted in the conflicting commit), the commit will be considered "empty."
+
+To avoid this, always ensure that there's a meaningful change in each commit during a rebase, and consider using squash or fixup to combine commits that don't make any changes.
+
 **Option 2: Using git reset (only works if you want to delete the most recent commit)**
 1. 
 ``` 
